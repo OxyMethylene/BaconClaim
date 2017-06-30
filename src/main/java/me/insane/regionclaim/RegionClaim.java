@@ -2,6 +2,7 @@ package me.insane.regionclaim;
 
 import com.google.inject.Inject;
 import me.insane.regionclaim.config.ConfigManager;
+import me.insane.regionclaim.config.ConfigUtils;
 import me.insane.regionclaim.events.SignClickEvent;
 import me.insane.regionclaim.events.SignPlaceEvent;
 import me.insane.regionclaim.object.Claim;
@@ -9,7 +10,6 @@ import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
-import org.spongepowered.api.block.tileentity.Sign;
 import org.spongepowered.api.config.DefaultConfig;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
@@ -19,8 +19,7 @@ import org.spongepowered.api.plugin.Plugin;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 
 /**
@@ -31,7 +30,7 @@ public class RegionClaim {
 
     private static RegionClaim plugin;
 
-    private static Map<Claim, Sign> regionClaims = new HashMap<>();
+    private static List<Claim> regionClaims = new ArrayList<>();
 
     @Inject
     private Logger logger;
@@ -57,6 +56,8 @@ public class RegionClaim {
         ConfigManager.getInstance().setup(config, configManager);
         ConfigManager.getInstance().loadConfig();
 
+        ConfigUtils.getAllClaims();
+
         game.getEventManager().registerListeners(this, new SignPlaceEvent(this));
         game.getEventManager().registerListeners(this, new SignClickEvent());
     }
@@ -72,14 +73,14 @@ public class RegionClaim {
     public static Logger getLogger() {
         return getInstance().logger;
     }
-    public static Map<Claim, Sign> getRegionClaims() {
+    public static List<Claim> getRegionClaims() {
         return regionClaims;
     }
-    public static void setRegionClaims(Map<Claim, Sign> regionClaims) {
+    public static void setRegionClaims(List<Claim> regionClaims) {
         RegionClaim.regionClaims = regionClaims;
     }
-    public static void addRegionClaim (Sign e, Claim c) {
-        regionClaims.put(c, e);
+    public static void addRegionClaim (Claim c) {
+        regionClaims.add(c);
     }
     public static void removeRegionClaim (Claim c) {
         regionClaims.remove(c);

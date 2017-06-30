@@ -1,23 +1,55 @@
 package me.insane.regionclaim.object;
 
+import org.spongepowered.api.block.tileentity.Sign;
+
 import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by micha on 29/06/2017.
  */
 public class Claim {
 
-    UUID playerUUID;
-    String name;
-    int days;
-    double price;
-    Timestamp dateBought;
-    boolean isOwned;
+    private String playerUUID;
+    private String name;
+    private int days;
+    private int total_days;
+    private double price;
+    private Timestamp dateBought;
+    private boolean isOwned;
 
-    public Claim (UUID playerUUID, int days, double price, String name) {
+    private String worldName;
+    private int x;
+    private int y;
+    private int z;
+
+    Sign sign;
+
+    public Claim(String playerUUID, String name, int days, int total_days, double price, Timestamp dateBought, boolean isOwned, String worldName, int x, int y, int z, Sign sign) {
+        this.playerUUID = playerUUID;
+        this.name = name;
+        this.days = days;
+        this.total_days = total_days;
+        this.price = price;
+        this.dateBought = dateBought;
+        this.isOwned = isOwned;
+        this.worldName = worldName;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.sign = sign;
+    }
+
+    public Claim(String playerUUID, String name, int days, double price, Timestamp dateBought, boolean isOwned) {
+        this.playerUUID = playerUUID;
+        this.name = name;
+        this.days = days;
+        this.price = price;
+        this.dateBought = dateBought;
+        this.isOwned = isOwned;
+    }
+
+    public Claim (String playerUUID, int days, double price, String name) {
         this.playerUUID = playerUUID;
         this.days = days;
         this.price = price;
@@ -26,7 +58,7 @@ public class Claim {
         this.name = name;
     }
 
-    public Claim (UUID playerUUID) {
+    public Claim (String playerUUID) {
         this.playerUUID = playerUUID;
         this.days = 7;
         this.price = 700;
@@ -34,11 +66,11 @@ public class Claim {
         this.isOwned = false;
     }
 
-    public UUID getPlayerUUID() {
+    public String getPlayerUUID() {
         return playerUUID;
     }
 
-    public void setPlayerUUID(UUID playerUUID) {
+    public void setPlayerUUID(String playerUUID) {
         this.playerUUID = playerUUID;
     }
 
@@ -78,8 +110,56 @@ public class Claim {
         return name;
     }
 
+    public int getTotal_days() {
+        return total_days;
+    }
+
+    public void setTotal_days(int total_days) {
+        this.total_days = total_days;
+    }
+
+    public String getWorldName() {
+        return worldName;
+    }
+
+    public void setWorldName(String worldName) {
+        this.worldName = worldName;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
+    public void setZ(int z) {
+        this.z = z;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Sign getSign() {
+        return sign;
+    }
+
+    public void setSign(Sign sign) {
+        this.sign = sign;
     }
 
     public boolean isExpired () {
