@@ -2,6 +2,7 @@ package me.insane.regionclaim.events;
 
 import me.insane.regionclaim.config.ConfigUtils;
 import org.spongepowered.api.block.BlockSnapshot;
+import org.spongepowered.api.block.BlockState;
 import org.spongepowered.api.block.BlockType;
 import org.spongepowered.api.block.BlockTypes;
 import org.spongepowered.api.block.tileentity.Sign;
@@ -27,32 +28,39 @@ public class SignBreakEvent {
 
     @Listener
     public void onSignBreak (ChangeBlockEvent.Break event, @Root Player player) {
+        player.sendMessage(Text.of("EVENT"));
             event
             .getTransactions()
             .stream()
             .forEach(trans -> trans.getOriginal().getLocation().ifPresent(loc -> {
-                player.sendMessage(Text.of("Event triggered"));
-                if (loc.getTileEntity().isPresent())
-                if (loc.getTileEntity().get().getType().equals(BlockTypes.STANDING_SIGN)) {
-                    Sign sign = (Sign) loc.getTileEntity().get();
+                player.sendMessage(Text.of("For each"));
+                if (loc.getBlock().getType().equals(BlockTypes.STANDING_SIGN)) {
+                    player.sendMessage(Text.of("New shit"));
+                }
+                if (loc.getTileEntity().isPresent()) {
+                    player.sendMessage(Text.of("First if"));
+                    if (loc.getTileEntity().get().getType().equals(BlockTypes.STANDING_SIGN)) {
+                        player.sendMessage(Text.of("Second if"));
+                        Sign sign = (Sign) loc.getTileEntity().get();
 
-                    player.sendMessage(Text.of("Event fired"));
+                        player.sendMessage(Text.of(loc.getTileEntity().get().getType()));
+                        player.sendMessage(Text.of("Event fired"));
 
-                    if (sign.getSignData().get(Keys.SIGN_LINES).get().get(0).toPlain().equals("[BaconClaim]")) {
-                        if (player.hasPermission("regionclaim.admin")) {
+                        if (sign.getSignData().get(Keys.SIGN_LINES).get().get(0).toPlain().equals("[BaconClaim]")) {
+                            if (player.hasPermission("regionclaim.admin")) {
 
-                            player.sendMessage(Text.of("Broke"));
+                                player.sendMessage(Text.of("Broke"));
 
-                            ConfigUtils.removeClaimRecord(loc.getTileEntity().get());
-                        } else {
+                                ConfigUtils.removeClaimRecord(loc.getTileEntity().get());
+                            } else {
 
-                            player.sendMessage(Text.of("Cant read lines."));
+                                player.sendMessage(Text.of("Cant read lines."));
 
-                            event.setCancelled(true);
+                                event.setCancelled(true);
+                            }
                         }
                     }
-                }
-            }));
+                }}));
 
 /*
         Sign sign;
