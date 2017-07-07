@@ -29,7 +29,7 @@ public class SignPlaceEvent {
         if (sign.getValue(Keys.SIGN_LINES).get().get(0).equals(Text.of("[BaconClaim]"))) {
             if (player.hasPermission("regionclaim.admin")) {
 
-                Claim claim = new Claim("New", 7, 700, "Default");
+                Claim claim = new Claim("New", 5, 1500, "Default");
 
                 if (!sign.getValue(Keys.SIGN_LINES).get().get(1).isEmpty()) {
                     String claimName = sign.getValue(Keys.SIGN_LINES).get().get(1).toPlain();
@@ -41,6 +41,7 @@ public class SignPlaceEvent {
                 if (!sign.getValue(Keys.SIGN_LINES).get().get(2).isEmpty()) {
                     int days = Integer.parseInt(sign.getValue(Keys.SIGN_LINES).get().get(2).toPlain());
                     claim.setDays(days);
+                    claim.setTotal_days(days);
                 }
                 if (!sign.getValue(Keys.SIGN_LINES).get().get(3).isEmpty()) {
                     int price = Integer.parseInt(sign.getValue(Keys.SIGN_LINES).get().get(3).toPlain());

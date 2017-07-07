@@ -7,6 +7,7 @@ import org.spongepowered.api.Sponge;
 import org.spongepowered.api.block.tileentity.Sign;
 import org.spongepowered.api.block.tileentity.TileEntity;
 import org.spongepowered.api.data.key.Keys;
+import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.world.Location;
 import org.spongepowered.api.world.World;
 
@@ -67,5 +68,32 @@ public class ConfigUtils {
 
         ConfigManager.getInstance().saveConfig();
         return true;
+    }
+
+    public static boolean buyCurrentClaim(Claim claim, Player player) {
+        claim.setDateBought(new Timestamp(System.currentTimeMillis()));
+        claim.setPlayerUUID(player.getUniqueId().toString());
+        claim.setTotal_days(claim.getDays());
+        claim.setOwned(true);
+
+        ConfigManager.getInstance().loadConfig();
+        ConfigManager.getInstance().getConfig().getNode("Claims", claim.getName(), "playerName").setValue(claim.getPlayerUUID().toString());
+        ConfigManager.getInstance().getConfig().getNode("Claims", claim.getName(), "dateBought").setValue(claim.getDateBought().toString());
+        ConfigManager.getInstance().getConfig().getNode("Claims", claim.getName(), "total_days").setValue(claim.getTotal_days());
+        ConfigManager.getInstance().getConfig().getNode("Claims", claim.getName(), "isOwned").setValue(claim.isOwned());
+        ConfigManager.getInstance().saveConfig();
+
+        return claim.isOwned();
+    }
+
+    public static boolean extendPlotTime(Claim claim) {
+
+        claim.setTotal_days(claim.getTotal_days() + claim.getDays());
+
+        ConfigManager.getInstance().loadConfig();
+        ConfigManager.getInstance().getConfig().getNode("Claims", claim.getName(), "total_days").setValue(claim.getTotal_days());
+        ConfigManager.getInstance().saveConfig();
+
+        return claim.getTotal_days() > claim.getDays();
     }
 }
